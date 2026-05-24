@@ -1,0 +1,1 @@
+{"version":3,"file":"driverUpdate.d.ts","sourceRoot":"","sources":["../../../src/generated/types/driverUpdate.ts"],"names":[],"mappings":"AAAA;;;;;GAKG;AAEH,MAAM,WAAW,YAAY;IAC3B,IAAI,CAAC,EAAE,MAAM,CAAC;IACd,KAAK,CAAC,EAAE,MAAM,CAAC;IACf,gBAAgB;IAChB,aAAa,CAAC,EAAE,MAAM,GAAG,IAAI,CAAC;IAC9B,QAAQ,CAAC,EAAE,OAAO,CAAC;CACpB"}

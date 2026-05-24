@@ -1,0 +1,1 @@
+{"version":3,"file":"driverEarningsHistory.d.ts","sourceRoot":"","sources":["../../../src/generated/types/driverEarningsHistory.ts"],"names":[],"mappings":"AAAA;;;;;GAKG;AACH,OAAO,KAAK,EAAE,aAAa,EAAE,MAAM,iBAAiB,CAAC;AAErD,MAAM,WAAW,qBAAqB;IACpC,IAAI,EAAE,aAAa,EAAE,CAAC;IACtB,KAAK,EAAE,MAAM,CAAC;IACd,IAAI,EAAE,MAAM,CAAC;IACb,KAAK,EAAE,MAAM,CAAC;CACf"}

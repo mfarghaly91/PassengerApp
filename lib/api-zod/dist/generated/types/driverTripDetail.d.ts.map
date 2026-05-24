@@ -1,0 +1,1 @@
+{"version":3,"file":"driverTripDetail.d.ts","sourceRoot":"","sources":["../../../src/generated/types/driverTripDetail.ts"],"names":[],"mappings":"AAAA;;;;;GAKG;AACH,OAAO,KAAK,EAAE,OAAO,EAAE,MAAM,WAAW,CAAC;AACzC,OAAO,KAAK,EAAE,IAAI,EAAE,MAAM,QAAQ,CAAC;AAEnC,MAAM,MAAM,gBAAgB,GAAG,IAAI,GAAG;IACpC,QAAQ,CAAC,EAAE,OAAO,EAAE,CAAC;CACtB,CAAC"}
