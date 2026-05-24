@@ -1,0 +1,128 @@
+You are working on the VeeGo project. Read the entire codebase first before touching anything.
+
+The project already has a fully working Shuttle service. There are two pages in the admin dashboard sidebar that are currently disabled and say "Coming Soon": Car and Bike. Your job is to activate these two pages and build everything needed to make them work end to end.
+
+Do NOT touch any existing shuttle code. Do NOT rename any existing tables or columns. Do NOT install any new packages.
+
+---
+
+STEP 1 — Database
+
+Add these new tables to the DB schema:
+
+Table: ride_pricing
+- id serial PK
+- vehicle_type text NOT NULL UNIQUE (values: 'car' or 'bike')
+- base_fare numeric(10,2) NOT NULL
+- per_km_rate numeric(10,2) NOT NULL
+- per_minute_rate numeric(10,2) NOT NULL default 0
+- minimum_fare numeric(10,2) NOT NULL
+- is_active boolean NOT NULL default true
+- updated_at timestamptz NOT NULL auto-update
+
+After creating the table, insert two seed rows: one for 'car' and one for 'bike' with reasonable default values.
+
+Table: rides
+- id serial PK
+- passenger_id integer NOT NULL FK → users.id
+- driver_id integer nullable FK → drivers.id
+- vehicle_type text NOT NULL (car or bike)
+- pickup_latitude real NOT NULL
+- pickup_longitude real NOT NULL
+- pickup_address text NOT NULL
+- dropoff_latitude real NOT NULL
+- dropoff_longitude real NOT NULL
+- dropoff_address text NOT NULL
+- distance_km numeric(8,3) nullable
+- estimated_duration_minutes integer nullable
+- estimated_price numeric(10,2) nullable
+- final_price numeric(10,2) nullable
+- status text NOT NULL default 'requested' (values: requested, searching, driver_assigned, driver_arrived, active, completed, cancelled)
+- cancel_reason text nullable
+- cancel_note text nullable
+- requested_at timestamptz NOT NULL default now()
+- driver_assigned_at timestamptz nullable
+- driver_arrived_at timestamptz nullable
+- started_at timestamptz nullable
+- completed_at timestamptz nullable
+- cancelled_at timestamptz nullable
+- created_at timestamptz NOT NULL default now()
+- updated_at timestamptz NOT NULL auto-update
+
+Table: ride_events
+- id serial PK
+- ride_id integer NOT NULL FK → rides.id CASCADE
+- type text NOT NULL
+- metadata jsonb nullable
+- created_at timestamptz NOT NULL default now()
+
+Apply the migration after creating the schema.
+
+---
+
+STEP 2 — Backend API
+
+Create a new route file for rides. Register it in the main router. Use existing auth middleware. Wrap every endpoint in try/catch. Validate every request body with Zod. Use Drizzle ORM only, no raw SQL.
+
+For distance calculation use the Haversine formula implemented inline. Do not install any package for it.
+
+Price formula: estimatedPrice = max(minimumFare, baseFare + distanceKm * perKmRate)
+
+Endpoints to create:
+
+GET /admin/rides/pricing — return pricing for car and bike. Admin only.
+PATCH /admin/rides/pricing/:vehicleType — update pricing fields for car or bike. Admin only.
+GET /admin/rides — list all rides with filters (vehicleType, status, driverId, passengerId) and pagination. Admin only.
+GET /admin/rides/:id — full ride detail including passenger info, driver info, and all ride_events. Admin only.
+
+POST /rides/estimate — body: { vehicleType, pickupLatitude, pickupLongitude, dropoffLatitude, dropoffLongitude } — calculate and return distanceKm, estimatedDurationMinutes, estimatedPrice. Auth: any logged in user.
+POST /rides/request — body: { vehicleType, pickupLatitude, pickupLongitude, pickupAddress, dropoffLatitude, dropoffLongitude, dropoffAddress } — check passenger wallet balance is enough, create ride with status 'searching', insert RIDE_REQUESTED into ride_events, emit socket event ride:new_request to room drivers:available:{vehicleType}. Auth: user role only.
+GET /rides/my — passenger's own ride history, filterable by vehicleType and status, paginated. Auth: user.
+GET /rides/:id — get ride. Passenger sees only their own. Driver sees only theirs. Admin sees all. Auth: any.
+PATCH /rides/:id/cancel — passenger cancels. Only if status is requested, searching, or driver_assigned. Sets cancelled_at, cancel_reason = passenger_cancelled. Emits ride:cancelled socket event to the driver if one was assigned. Auth: user, must own ride.
+
+GET /driver/rides/available — rides with status 'searching' matching this driver's vehicle_type. Driver must be online. Auth: driver.
+PATCH /driver/rides/:id/accept — check ride is still 'searching'. Set status to driver_assigned, set driver_id, set driver_assigned_at, set driver status to busy. Insert DRIVER_ASSIGNED event. Emit ride:driver_assigned socket event to passenger. Auth: driver.
+PATCH /driver/rides/:id/arrived — set status to driver_arrived, set driver_arrived_at. Insert DRIVER_ARRIVED event. Emit ride:driver_arrived to passenger. Auth: driver.
+PATCH /driver/rides/:id/start — set status to active, set started_at. Insert RIDE_STARTED event. Emit ride:started to passenger. Auth: driver.
+PATCH /driver/rides/:id/complete — calculate final_price. In a DB transaction: set status to completed, set completed_at, set final_price, deduct final_price from passenger wallet_balance, insert a payment wallet_transaction for the passenger, insert a driver_earnings row with amount = final_price * 0.15 and status confirmed, set driver status to online. Insert RIDE_COMPLETED event. Emit ride:completed to passenger with final_price. Auth: driver.
+PATCH /driver/rides/:id/cancel — only if status is driver_assigned or driver_arrived. Set cancelled, set driver status to online. Insert RIDE_CANCELLED event. Emit ride:cancelled to passenger. Auth: driver.
+
+---
+
+STEP 3 — Socket.IO
+
+In the existing Socket.IO setup add:
+- When a driver connects and is online, join them to room drivers:available:{vehicleType} based on their vehicle_type in their driver profile.
+- When a driver goes offline or busy, remove them from that room.
+- When any user connects, join them to room passenger:{userId}.
+- Handle new event from driver: driver:ride:location with payload { rideId, latitude, longitude } — look up the ride to get passengerId, then emit ride:driver_location to room passenger:{passengerId}.
+
+---
+
+STEP 4 — Admin Dashboard
+
+Activate the existing Car and Bike pages in the admin dashboard sidebar (remove the "Coming Soon" state).
+
+Each page (Car and Bike) must show:
+
+Section 1 — Pricing settings
+A form showing the current pricing for this vehicle type (base_fare, per_km_rate, per_minute_rate, minimum_fare). Each field is editable inline. A Save button calls PATCH /admin/rides/pricing/:vehicleType. Show success or error feedback after saving.
+
+Section 2 — Rides table
+A paginated table of all rides for this vehicle type fetched from GET /admin/rides?vehicleType=car (or bike). Columns: ID, passenger name, driver name, pickup address, dropoff address, distance, estimated price, final price, status, requested date. Clicking a row opens a detail panel or modal showing full ride info and the ride_events timeline.
+
+Section 3 — Stats cards at the top
+Show: total rides, completed rides, cancelled rides, total revenue (sum of final_price where status=completed). Fetch this from the rides list and calculate client-side.
+
+Use the exact same design system, components, colors, and patterns already used in the rest of the dashboard. Do not introduce any new design patterns.
+
+---
+
+STRICT RULES:
+- Read the full codebase before writing any code.
+- Do not touch any existing shuttle files, tables, or endpoints.
+- Do not install any new packages.
+- Do not change any existing DB tables or columns.
+- Every API endpoint must have try/catch and Zod validation.
+- After you finish, list every file you created and every file you modified.

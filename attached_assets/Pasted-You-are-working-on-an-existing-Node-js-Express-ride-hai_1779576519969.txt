@@ -1,0 +1,132 @@
+You are working on an existing Node.js (Express) ride-hailing backend.
+
+IMPORTANT GOAL:
+Implement a SIMPLE but COMPLETE tracking system that allows full reconstruction of any trip for legal/safety purposes WITHOUT overengineering the database.
+
+DO NOT:
+- Do not create too many new tables
+- Do not build complex audit systems
+- Do not break existing APIs
+- Do not overcomplicate architecture
+
+---
+
+# REQUIRED DESIGN (KEEP IT SIMPLE)
+
+## 1. Trips Table (SOURCE OF TRUTH)
+Ensure trips table contains:
+
+- id
+- userId
+- driverId
+- vehicleType (shuttle | car | motorcycle)
+- status (requested, accepted, arrived, started, completed, cancelled)
+- pickupLocation
+- dropoffLocation
+- price
+- createdAt
+
+Add timestamps for lifecycle:
+- acceptedAt
+- arrivedAt
+- startedAt
+- completedAt
+- cancelledAt
+
+This table must represent the FULL official trip record.
+
+---
+
+## 2. Trip Events Table (LIGHTWEIGHT TRACKING)
+
+Create ONLY ONE additional table:
+
+trip_events:
+- id
+- tripId (FK)
+- type (string enum-like)
+  Examples:
+  - DRIVER_ACCEPTED
+  - DRIVER_ARRIVED
+  - TRIP_STARTED
+  - TRIP_COMPLETED
+  - TRIP_CANCELLED
+  - LOCATION_UPDATE
+- metadata (JSON) → flexible data storage
+- createdAt
+
+This table is used to reconstruct full trip history.
+
+IMPORTANT:
+- Do NOT create any other event/log tables
+- Keep this as the ONLY tracking/log system
+
+---
+
+## 3. Vehicle Expansion (SIMPLE)
+
+Extend existing system:
+
+Add support for:
+- car
+- motorcycle
+- shuttle (already exists)
+
+Do NOT create new complex modules.
+Just extend existing trip logic using vehicleType.
+
+---
+
+## 4. LOCATION TRACKING (CONTROLLED)
+
+For driver location updates:
+- Store ONLY important snapshots in trip_events (NOT every second)
+- Example rule:
+  - store location every 10–15 seconds OR on major movement change
+
+Metadata example:
+{
+  "lat": number,
+  "lng": number,
+  "speed": number
+}
+
+---
+
+## 5. FULL TRIP RECONSTRUCTION API (IMPORTANT)
+
+Create admin endpoint:
+
+GET /admin/trips/:id/full-timeline
+
+It must return:
+- trip details
+- all trip_events sorted by time
+- driver info
+- passenger info
+- vehicle info
+
+This endpoint must allow FULL reconstruction of what happened.
+
+---
+
+## 6. USER & DRIVER HISTORY
+
+Do NOT duplicate data.
+
+Instead:
+- user history = query trips by userId
+- driver history = query trips by driverId
+
+No extra history tables allowed.
+
+---
+
+# GOAL
+
+Build a CLEAN, SIMPLE, production-safe tracking system that:
+- allows full trip reconstruction
+- supports legal data requests
+- avoids database explosion
+- stays easy to maintain
+- integrates with existing backend without breaking anything

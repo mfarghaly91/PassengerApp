@@ -1,0 +1,210 @@
+[21:34:23.395] INFO (473): [register] incoming request body
+    body: {
+      "name": "mido",
+      "email": "hshs@hsjs.com",
+      "phone": "01206666323",
+      "password": "[REDACTED]"
+    }
+[21:34:23.613] INFO (473): [register] validation + uniqueness passed, creating user
+    email: "hshs@hsjs.com"
+    phone: "01206666323"
+[21:34:23.957] INFO (473): request completed
+    req: {
+      "id": 132,
+      "method": "POST",
+      "url": "/api/auth/register"
+    }
+    res: {
+      "statusCode": 201
+    }
+    responseTime: 563
+[21:34:24.886] INFO (473): request completed
+    req: {
+      "id": 133,
+      "method": "GET",
+      "url": "/api/routes"
+    }
+    res: {
+      "statusCode": 304
+    }
+    responseTime: 213
+[21:34:27.889] INFO (473): request completed
+    req: {
+      "id": 134,
+      "method": "GET",
+      "url": "/api/routes"
+    }
+    res: {
+      "statusCode": 304
+    }
+    responseTime: 32
+[21:34:30.033] INFO (473): request completed
+    req: {
+      "id": 135,
+      "method": "GET",
+      "url": "/api/users/me/bookings"
+    }
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 62
+[21:34:33.124] INFO (473): request completed
+    req: {
+      "id": 136,
+      "method": "GET",
+      "url": "/api/routes/8"
+    }
+    res: {
+      "statusCode": 304
+    }
+    responseTime: 31
+[21:34:33.357] INFO (473): request completed
+    req: {
+      "id": 137,
+      "method": "GET",
+      "url": "/api/saved-routes"
+    }
+    res: {
+      "statusCode": 404
+    }
+    responseTime: 1
+[21:34:34.090] INFO (473): request completed
+    req: {
+      "id": 138,
+      "method": "GET",
+      "url": "/api/trips"
+    }
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 32
+[21:34:39.240] INFO (473): request completed
+    req: {
+      "id": 139,
+      "method": "POST",
+      "url": "/api/bookings"
+    }
+    res: {
+      "statusCode": 201
+    }
+    responseTime: 180
+[21:34:39.466] INFO (473): request completed
+    req: {
+      "id": 140,
+      "method": "GET",
+      "url": "/api/trips/128"
+    }
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 31
+[21:34:39.691] INFO (473): request completed
+    req: {
+      "id": 141,
+      "method": "GET",
+      "url": "/api/routes/8"
+    }
+    res: {
+      "statusCode": 304
+    }
+    responseTime: 30
+[21:34:50.346] INFO (473): request completed
+    req: {
+      "id": 142,
+      "method": "GET",
+      "url": "/api/bookings"
+    }
+    res: {
+      "statusCode": 401
+    }
+    responseTime: 1
+[21:34:51.524] INFO (473): request completed
+    req: {
+      "id": 143,
+      "method": "GET",
+      "url": "/api/bookings"
+    }
+    res: {
+      "statusCode": 401
+    }
+    responseTime: 0
+[21:34:57.768] INFO (473): request completed
+    req: {
+      "id": 144,
+      "method": "GET",
+      "url": "/api/bookings"
+    }
+    res: {
+      "statusCode": 401
+    }
+    responseTime: 1
+[21:34:58.961] INFO (473): request completed
+    req: {
+      "id": 145,
+      "method": "GET",
+      "url": "/api/bookings"
+    }
+    res: {
+      "statusCode": 401
+    }
+    responseTime: 1
+[21:35:59.445] INFO (473): request completed
+    req: {
+      "id": 146,
+      "method": "GET",
+      "url": "/api/admin/users"
+    }
+    res: {
+      "statusCode": 401
+    }
+    responseTime: 1
+[21:36:00.625] INFO (473): request completed
+    req: {
+      "id": 147,
+      "method": "GET",
+      "url": "/api/admin/users"
+    }
+    res: {
+      "statusCode": 401
+    }
+    responseTime: 1
+[21:36:49.406] INFO (473): request completed
+    req: {
+      "id": 148,
+      "method": "GET",
+      "url": "/api/admin/staff"
+    }
+    res: {
+      "statusCode": 401
+    }
+    responseTime: 2
+[21:36:49.407] INFO (473): request completed
+    req: {
+      "id": 149,
+      "method": "GET",
+      "url": "/api/admin/roles"
+    }
+    res: {
+      "statusCode": 401
+    }
+    responseTime: 1
+[21:36:50.590] INFO (473): request completed
+    req: {
+      "id": 150,
+      "method": "GET",
+      "url": "/api/admin/staff"
+    }
+    res: {
+      "statusCode": 401
+    }
+    responseTime: 2
+[21:36:50.591] INFO (473): request completed
+    req: {
+      "id": 151,
+      "method": "GET",
+      "url": "/api/admin/roles"
+    }
+    res: {
+      "statusCode": 401
+    }
+    responseTime: 1

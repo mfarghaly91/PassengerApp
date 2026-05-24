@@ -1,0 +1,104 @@
+You are working on the VeeGo admin dashboard. Read the entire codebase first before writing any code.
+
+Your job is to upgrade the Driver detail panel/modal across ALL driver pages in the dashboard (Shuttle drivers page, Car drivers page, Bike drivers page) so that when an admin clicks "View" on any driver, they see a comprehensive full-profile page with everything related to that driver.
+
+Do NOT change the drivers list/table itself. Only upgrade what appears when you open a driver's detail. Do NOT install any new packages. Match the existing design system exactly.
+
+---
+
+THE DRIVER DETAIL PAGE MUST HAVE THESE SECTIONS:
+
+SECTION 1 — Personal Info
+- Full name
+- Phone number
+- Email (from the linked users table)
+- National ID number
+- License number
+- Account created date
+- Last login date (from users.updated_at or any auth timestamp available)
+- Current status (online / offline / busy / suspended)
+- Is active (yes/no)
+- Rating (show as stars + number)
+- Wallet balance (from users.wallet_balance)
+
+SECTION 2 — Uploaded Documents
+Fetch from: GET /api/admin/driver-documents?driverId=X (already exists in the backend)
+
+Show each document as a card with:
+- Document type label in Arabic and English
+- Uploaded date
+- Verification status badge (pending / approved / rejected)
+- The actual image — show it as a clickable thumbnail that opens full size in a lightbox or new tab
+- Approve and Reject buttons (call PATCH /api/admin/driver-documents/:id/verify with { status: 'approved' } or { status: 'rejected' }) — only show these if status is pending. After action, refresh the document list.
+
+Show these document types clearly labeled:
+- national_id_front — National ID Front / وجه البطاقة
+- national_id_back — National ID Back / ظهر البطاقة
+- driving_license_front — Driving License Front / وجه رخصة القيادة
+- driving_license_back — Driving License Back / ظهر رخصة القيادة
+- vehicle_license_front — Vehicle License Front / وجه رخصة المركبة
+- vehicle_license_back — Vehicle License Back / ظهر رخصة المركبة
+- vehicle_photo — Vehicle Photos / صور المركبة (there may be multiple)
+- profile_photo — Profile Photo / الصورة الشخصية
+- trip_selfie — Trip Selfie / سيلفي الرحلة (may be multiple)
+
+If a document type has not been uploaded yet, show a placeholder card saying "Not uploaded yet".
+
+SECTION 3 — Assigned Vehicle (Shuttle only, skip for Car/Bike)
+For Shuttle driver pages only: show the assigned bus details if assigned_bus_id is set (bus plate number, model, capacity). If not assigned, show "No bus assigned".
+For Car and Bike driver pages: skip this section entirely.
+
+SECTION 4 — Statistics
+- Total rides/trips completed
+- Total rides/trips cancelled
+- Total earnings (sum of driver_earnings where status = confirmed or paid)
+- Average rating
+- Total rides this month
+- Total earnings this month
+
+For Shuttle drivers: fetch trips from the existing trips/driver endpoints.
+For Car/Bike drivers: fetch from GET /api/admin/rides?driverId=X&vehicleType=car (or bike).
+
+SECTION 5 — Recent Activity
+Show the last 10 rides/trips for this driver as a table:
+- Date
+- From → To (pickup to dropoff for Car/Bike, route name for Shuttle)
+- Status badge
+- Price / Fare
+- Duration (if available)
+
+SECTION 6 — Account Actions
+Buttons at the bottom:
+- Block / Unblock driver (call PATCH /api/admin/users/:userId/toggle-block)
+- Suspend / Activate driver (update driver is_active)
+- Each button must ask for confirmation before executing.
+- Show success or error feedback after each action.
+
+---
+
+HOW TO APPLY THIS ACROSS ALL DRIVER PAGES
+
+Build one shared DriverDetailPanel component that accepts these props:
+- driverId: number
+- serviceType: 'shuttle' | 'car' | 'bike'
+
+Use this component in:
+- The existing Shuttle drivers page (replace whatever detail view exists there)
+- The new Car drivers page
+- The new Bike drivers page
+
+The component uses serviceType to:
+- Show or hide the Assigned Vehicle section
+- Know which API to call for rides/trips history
+- Know which vehicleType filter to use
+
+---
+
+STRICT RULES:
+- Read the full codebase before writing anything.
+- Do not touch the drivers list or table, only the detail view.
+- Do not install any new packages.
+- Do not change any existing backend endpoints unless a filter param is genuinely missing.
+- Handle loading and error states visibly on every section.
+- Images must render correctly — use the same base URL the project already uses for serving uploaded files.
+- After finishing, list every file created and every file modified.
