@@ -1,0 +1,1 @@
+{"version":3,"file":"stationInput.d.ts","sourceRoot":"","sources":["../../../src/generated/types/stationInput.ts"],"names":[],"mappings":"AAAA;;;;;GAKG;AAEH,MAAM,WAAW,YAAY;IAC3B,IAAI,EAAE,MAAM,CAAC;IACb,QAAQ,EAAE,MAAM,CAAC;IACjB,SAAS,EAAE,MAAM,CAAC;IAClB,KAAK,EAAE,MAAM,CAAC;CACf"}

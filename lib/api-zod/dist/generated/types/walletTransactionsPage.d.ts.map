@@ -1,0 +1,1 @@
+{"version":3,"file":"walletTransactionsPage.d.ts","sourceRoot":"","sources":["../../../src/generated/types/walletTransactionsPage.ts"],"names":[],"mappings":"AAAA;;;;;GAKG;AACH,OAAO,KAAK,EAAE,iBAAiB,EAAE,MAAM,qBAAqB,CAAC;AAE7D,MAAM,WAAW,sBAAsB;IACrC,IAAI,EAAE,iBAAiB,EAAE,CAAC;IAC1B,KAAK,EAAE,MAAM,CAAC;IACd,IAAI,EAAE,MAAM,CAAC;IACb,KAAK,EAAE,MAAM,CAAC;CACf"}
