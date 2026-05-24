@@ -1,0 +1,145 @@
+import { z } from "zod/v4";
+export declare const earningStatusEnum: import("drizzle-orm/pg-core").PgEnum<["pending", "confirmed", "paid"]>;
+export declare const driverEarningsTable: import("drizzle-orm/pg-core").PgTableWithColumns<{
+    name: "driver_earnings";
+    schema: undefined;
+    columns: {
+        id: import("drizzle-orm/pg-core").PgColumn<{
+            name: "id";
+            tableName: "driver_earnings";
+            dataType: "number";
+            columnType: "PgSerial";
+            data: number;
+            driverParam: number;
+            notNull: true;
+            hasDefault: true;
+            isPrimaryKey: true;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        driverId: import("drizzle-orm/pg-core").PgColumn<{
+            name: "driver_id";
+            tableName: "driver_earnings";
+            dataType: "number";
+            columnType: "PgInteger";
+            data: number;
+            driverParam: string | number;
+            notNull: true;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        tripId: import("drizzle-orm/pg-core").PgColumn<{
+            name: "trip_id";
+            tableName: "driver_earnings";
+            dataType: "number";
+            columnType: "PgInteger";
+            data: number;
+            driverParam: string | number;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        amount: import("drizzle-orm/pg-core").PgColumn<{
+            name: "amount";
+            tableName: "driver_earnings";
+            dataType: "string";
+            columnType: "PgNumeric";
+            data: string;
+            driverParam: string;
+            notNull: true;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        status: import("drizzle-orm/pg-core").PgColumn<{
+            name: "status";
+            tableName: "driver_earnings";
+            dataType: "string";
+            columnType: "PgEnumColumn";
+            data: "pending" | "confirmed" | "paid";
+            driverParam: string;
+            notNull: true;
+            hasDefault: true;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: ["pending", "confirmed", "paid"];
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        date: import("drizzle-orm/pg-core").PgColumn<{
+            name: "date";
+            tableName: "driver_earnings";
+            dataType: "date";
+            columnType: "PgTimestamp";
+            data: Date;
+            driverParam: string;
+            notNull: true;
+            hasDefault: true;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        createdAt: import("drizzle-orm/pg-core").PgColumn<{
+            name: "created_at";
+            tableName: "driver_earnings";
+            dataType: "date";
+            columnType: "PgTimestamp";
+            data: Date;
+            driverParam: string;
+            notNull: true;
+            hasDefault: true;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+    };
+    dialect: "pg";
+}>;
+export declare const insertDriverEarningsSchema: z.ZodObject<{
+    date: z.ZodOptional<z.ZodDate>;
+    status: z.ZodOptional<z.ZodEnum<{
+        pending: "pending";
+        confirmed: "confirmed";
+        paid: "paid";
+    }>>;
+    driverId: z.ZodInt;
+    tripId: z.ZodOptional<z.ZodNullable<z.ZodInt>>;
+    amount: z.ZodString;
+}, {
+    out: {};
+    in: {};
+}>;
+export type InsertDriverEarnings = z.infer<typeof insertDriverEarningsSchema>;
+export type DriverEarnings = typeof driverEarningsTable.$inferSelect;
+//# sourceMappingURL=driverEarnings.d.ts.map

@@ -1,0 +1,145 @@
+import { z } from "zod/v4";
+export declare const stationProgressStatusEnum: import("drizzle-orm/pg-core").PgEnum<["pending", "arrived", "completed"]>;
+export declare const tripStationProgressTable: import("drizzle-orm/pg-core").PgTableWithColumns<{
+    name: "trip_station_progress";
+    schema: undefined;
+    columns: {
+        id: import("drizzle-orm/pg-core").PgColumn<{
+            name: "id";
+            tableName: "trip_station_progress";
+            dataType: "number";
+            columnType: "PgSerial";
+            data: number;
+            driverParam: number;
+            notNull: true;
+            hasDefault: true;
+            isPrimaryKey: true;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        tripId: import("drizzle-orm/pg-core").PgColumn<{
+            name: "trip_id";
+            tableName: "trip_station_progress";
+            dataType: "number";
+            columnType: "PgInteger";
+            data: number;
+            driverParam: string | number;
+            notNull: true;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        stationId: import("drizzle-orm/pg-core").PgColumn<{
+            name: "station_id";
+            tableName: "trip_station_progress";
+            dataType: "number";
+            columnType: "PgInteger";
+            data: number;
+            driverParam: string | number;
+            notNull: true;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        status: import("drizzle-orm/pg-core").PgColumn<{
+            name: "status";
+            tableName: "trip_station_progress";
+            dataType: "string";
+            columnType: "PgEnumColumn";
+            data: "completed" | "pending" | "arrived";
+            driverParam: string;
+            notNull: true;
+            hasDefault: true;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: ["pending", "arrived", "completed"];
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        arrivedAt: import("drizzle-orm/pg-core").PgColumn<{
+            name: "arrived_at";
+            tableName: "trip_station_progress";
+            dataType: "date";
+            columnType: "PgTimestamp";
+            data: Date;
+            driverParam: string;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        completedAt: import("drizzle-orm/pg-core").PgColumn<{
+            name: "completed_at";
+            tableName: "trip_station_progress";
+            dataType: "date";
+            columnType: "PgTimestamp";
+            data: Date;
+            driverParam: string;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        createdAt: import("drizzle-orm/pg-core").PgColumn<{
+            name: "created_at";
+            tableName: "trip_station_progress";
+            dataType: "date";
+            columnType: "PgTimestamp";
+            data: Date;
+            driverParam: string;
+            notNull: true;
+            hasDefault: true;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+    };
+    dialect: "pg";
+}>;
+export declare const insertTripStationProgressSchema: z.ZodObject<{
+    status: z.ZodOptional<z.ZodEnum<{
+        completed: "completed";
+        pending: "pending";
+        arrived: "arrived";
+    }>>;
+    tripId: z.ZodInt;
+    stationId: z.ZodInt;
+    arrivedAt: z.ZodOptional<z.ZodNullable<z.ZodDate>>;
+    completedAt: z.ZodOptional<z.ZodNullable<z.ZodDate>>;
+}, {
+    out: {};
+    in: {};
+}>;
+export type InsertTripStationProgress = z.infer<typeof insertTripStationProgressSchema>;
+export type TripStationProgress = typeof tripStationProgressTable.$inferSelect;
+//# sourceMappingURL=tripStationProgress.d.ts.map
